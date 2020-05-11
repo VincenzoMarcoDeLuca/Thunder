@@ -1,0 +1,34 @@
+{
+  "name": "Thunder",
+  "short_name": "Thunder",
+  "icons": [{
+    "src": "static/images/thunder-icon-128.jpg",
+      "sizes": "128x74",
+      "type": "image/jpg"
+    }, {
+      "src": "static/images/thunder-icon-144.jpg",
+      "sizes": "144x83",
+      "type": "image/jpg"
+    }, {
+      "src": "static/images/thunder-icon-152.jpg",
+      "sizes": "152x88",
+      "type": "image/jpg"
+    }, {
+      "src": "static/images/thunder-icon-192.jpg",
+      "sizes": "192x111",
+      "type": "image/jpg"
+    }, {
+      "src": "static/images/thunder-icon-256.jpg",
+      "sizes": "256x148",
+      "type": "image/jpg"
+    }, {
+      "src": "static/images/thunder-icon-512.jpg",
+      "sizes": "512x296",
+      "type": "image/jpg"
+    }],
+  "lang": "en-US",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "white",
+  "theme_color": "white"
+}

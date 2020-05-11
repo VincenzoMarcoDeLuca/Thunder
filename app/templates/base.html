@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thunder</title>
+
+    <link rel="manifest" href="{{ url_for('static',filename='script/manifest.json') }}">
+    <link rel="icon" href="{{ url_for('static',filename='images/favicon.ico') }}" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="{{ url_for('static',filename='images/thunder-icon-152.jpg') }}">
+    <meta name="theme-color" content="white"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hello World">
+    <meta name="msapplication-TileImage" content="{{ url_for('static',filename='images/thunder-icon-144.jpg') }}">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="icon" href="{{ url_for('static',filename='images/favicon.ico') }}" type="image/x-icon" />
+    <link  href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    {{ moment.include_moment() }}
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">Thunder</a>
+
+    <ul class="navbar-nav mr-auto">
+        {% if current_user.is_anonymous %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.login') }}"><i class="fas fa-cloud"></i> Login</a>
+            </li>
+        {% else %}
+            <button class="btn" and style="background-color:transparent" >
+            <li id="notices_open" class="nav-item">
+                <a id="noticesLink" class="nav-link">
+                    <i class="far fa-bell">
+                    </i>
+                    Notices
+                </a>
+            </li>
+            </button>
+            <button class="btn" and style="background-color:transparent" >
+            <li id="friend_open" class="nav-item">
+                <a class="nav-link" >
+                    <svg class="bi bi-person-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M2 15v-1c0-1 1-4 6-4s6 3 6 4v1H2zm6-6a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    Friends
+                </a>
+            </li>
+            </button>
+            <button class="btn" and style="background-color:transparent" >
+            <li id="sgamo_open" class="nav-item">
+                <a id="sgamoLink" class="nav-link">
+                    <svg class="bi bi-eye-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 8a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                        <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" clip-rule="evenodd"/>
+                    </svg>
+                    Sgamo
+                </a>
+            </li>
+            </button>
+            <button class="btn" and style="background-color:transparent" >
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                    <svg class="bi bi-forward" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M9.502 5.513a.144.144 0 00-.202.134V6.65a.5.5 0 01-.5.5H2.5v2.9h6.3a.5.5 0 01.5.5v1.003c0 .108.11.176.202.134l3.984-2.933a.51.51 0 01.042-.028.147.147 0 000-.252.51.51 0 01-.042-.028L9.502 5.513zM8.3 5.647a1.144 1.144 0 011.767-.96l3.994 2.94a1.147 1.147 0 010 1.946l-3.994 2.94a1.144 1.144 0 01-1.767-.96v-.503H2a.5.5 0 01-.5-.5v-3.9a.5.5 0 01.5-.5h6.3v-.503z" clip-rule="evenodd"/>
+                    </svg>
+                    Logout
+                </a>
+            </li>
+            </button>
+        {% endif %}
+    </ul>
+
+    {% if current_user.is_authenticated  %}
+        <form class="form-inline ml-auto">
+            <div class="input-group">
+                <input id="search_username" type="text" class="form-control " placeholder="Search">
+                 <div class="input-group-append">
+                    <button id="search_button" type="button" class="btn btn-light">
+                        <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                 </div>
+            </div>
+        </form>
+    {% endif %}
+</nav>
+        {% block app_content %}{% endblock %}
+</body>
+</html>
+
+
